@@ -1,3 +1,4 @@
+requests
 asgiref==3.2.7
 Django==3.0.5
 mysqlclient==1.4.6

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <button type="button" class="btn btn-primary m-3" data-toggle="modal" data-target="#exampleModalCenter">
+        Добавить новый город
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Добавить город</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form action="{% url 'add_city_url' %}" method="post">
+                    <div class="modal-body">
+
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Добавить">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id города</th>
+            <th scope="col">Картинка погоды</th>
+            <th scope="col">Город</th>
+            <th scope="col">Погодные условия</th>
+            <th scope="col">Температура</th>
+            <th scope="col">Атмосферное давление</th>
+            <th scope="col">Влажность воздуха</th>
+            <th scope="col">Скорость ветра</th>
+            <th scope="col">Географические координаты</th>
+            <th scope="col">Восход</th>
+            <th scope="col">Закат</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for weather in weather_list %}
+
+            <tr class="table-primary">
+                <th scope="row">{{ weather.city_id }}</th>
+                <td><img src="{{ weather.icon }}" alt=""> {{ weather.icon }}</td>
+                <td>{{ weather.name }}</td>
+                <td>{{ weather.description }}</td>
+                <td>{{ weather.temp }}</td>
+                <td>{{ weather.pressure }}</td>
+                <td>{{ weather.humidity }}</td>
+                <td>{{ weather.speed }}</td>
+                <td>
+                    <a href="https://openweathermap.org/weathermap?zoom=8&lat={{ weather.coord_lat }}8&lon={{ weather.coord_lon }}">{{ weather.coord_lat }}; {{ weather.coord_lon }}</a>
+                </td>
+                <td>{{ weather.sunrise }}</td>
+                <td>{{ weather.sunset }}</td>
+                <td>
+                    <form action="{% url 'delete_city_url' weather.city_id %}" method="post">
+                        {% csrf_token %}
+                        {{ delete_form }}
+                        <input type="submit" value="Удалить">
+                    </form>
+                </td>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}
