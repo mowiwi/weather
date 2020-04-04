@@ -6,7 +6,8 @@ from django.views.generic import ListView
 from django.views.generic.base import View
 from .models import Weather
 from .forms import AddCityForm, DeleteCityForm
-
+import csv
+from django.http import HttpResponse
 from weather.settings_local import API_KEY
 
 
@@ -76,3 +77,21 @@ class DeleteCity(View):
         else:
             messages.error(request, "Ошибка удаления")
         return redirect('home_url')
+
+
+def export(request):
+    response = HttpResponse(content_type='text/csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['Id города', 'Картинка погоды', 'Город', 'Погодные условия', 'Температура', 'Атмосферное давление',
+                     'Влажность воздуха', 'Скорость ветра', 'Географические координаты - долгота',
+                     'Географические координаты - широта', 'Восход', 'Закат'])
+
+    for weather in Weather.objects.all().values_list('city_id', 'icon', 'name', 'description', 'temp', 'pressure',
+                                                     'humidity', 'speed', 'coord_lon', 'coord_lat', 'sunrise',
+                                                     'sunset'):
+        writer.writerow(weather)
+
+    response['Content-Disposition'] = 'attachment; filename="weather.csv"'
+
+    return response
