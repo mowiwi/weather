@@ -22,3 +22,29 @@ class Weather(models.Model):
     class Meta:
         verbose_name = "Погода"
         verbose_name_plural = "Погода"
+
+
+class Ordering(models.Model):
+    """Сортировка"""
+    CHOICES = (
+        ('city_id', 'Id города: по возростанию'),
+        ('-city_id', 'Id города: по убыванию'),
+        ('name', 'Имя: по возростанию'),
+        ('-name', 'Имя: по убыванию'),
+        ('temp', 'Температура: по возростанию'),
+        ('-temp', 'Температура: по убыванию'),
+    )
+    sort = models.CharField('Сортировать по:', max_length=10,
+                            choices=CHOICES,
+                            default='city_id')
+
+    class Meta:
+        verbose_name = "Настройки"
+        verbose_name_plural = "Настройки"
+
+    def save(self, *args, **kwargs):
+        self.id = 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return 'Настройки сортировки'

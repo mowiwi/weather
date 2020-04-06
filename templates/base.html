@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
 {% include 'include/navs.html' %}
 
 <div class="col-11 mr-auto ml-auto">
@@ -26,7 +27,7 @@
             <div {% if message.tags == 'error' %} class="alert alert-danger alert-dismissible fade show text-center"
             {% else %}
                                                   class="alert alert-success alert-dismissible fade show text-center"
-            {% endif %}  role="alert" id="my-alert">
+            {% endif %}  role="alert">
                 {{ message }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -55,18 +56,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
-{% if messages %}
-    <script>
-
-        $(function () {
-            window.setTimeout(function () {
-                $('#my-alert').alert('close');
-            }, 5000);
-        });
-
-    </script>
-{% endif %}
 
 </body>
 </html>

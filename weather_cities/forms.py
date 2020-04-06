@@ -1,5 +1,5 @@
 from django import forms
-from .models import Weather
+from .models import Weather, Ordering
 
 
 class AddCityForm(forms.ModelForm):
@@ -16,3 +16,11 @@ class DeleteCityForm(forms.ModelForm):
     class Meta:
         model = Weather
         fields = ()
+
+
+class OrderingForm(forms.ModelForm):
+    """Форма сортивовки"""
+
+    class Meta:
+        model = Ordering
+        fields = ('sort',)
