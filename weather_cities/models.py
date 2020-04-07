@@ -7,7 +7,7 @@ from django.dispatch import receiver
 class Weather(models.Model):
     """Погода"""
     user = models.ManyToManyField(User)
-    city_id = models.PositiveIntegerField('ID города')
+    city_id = models.PositiveIntegerField('ID города', db_index=True)
     icon = models.URLField('Картинка погоды')
     name = models.CharField('Город', max_length=100)
     description = models.CharField('Погодные условия', max_length=100)
