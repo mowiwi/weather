@@ -3,3 +3,4 @@
 __pycache__/
 *.pyc
 /weather/settings_local.py
+/db.sqlite3
