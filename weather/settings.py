@@ -36,9 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 
     'weather_cities',
+
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -122,8 +126,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-
+SITE_ID = 1
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+ACCOUNT_USERNAME_MIN_LENGTH = 3
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_REQUIRED = True
 
 
 try:

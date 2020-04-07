@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.views.generic import ListView
 from django.views.generic.base import View
@@ -87,6 +88,7 @@ class DeleteCity(View):
         return redirect('home_url')
 
 
+@login_required
 def export(request):
     """Экспорт даных в csv файл"""
 
@@ -104,6 +106,7 @@ def export(request):
     return response
 
 
+@login_required
 def import_csv(request):
     """Импорт даных с csv файла"""
 

@@ -1,5 +1,5 @@
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
+    <ul class="pagination pagination-lg justify-content-center">
         {% if page_obj.has_previous %}
             {% if page_obj.number|add:'-3' > 1 %}
 
@@ -37,7 +37,7 @@
 
             {% if page_obj.number|add:'4' < page_obj.paginator.num_pages %}
 
-                <span>...</span>
+                <li class="page-item"><a class="page-link">. . .</a></li>
 
             {% endif %}
 
