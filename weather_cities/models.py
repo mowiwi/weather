@@ -1,9 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Weather(models.Model):
     """Погода"""
-    city_id = models.PositiveIntegerField('Id города', unique=True)
+    user = models.ManyToManyField(User)
+    city_id = models.PositiveIntegerField('ID города')
     icon = models.URLField('Картинка погоды')
     name = models.CharField('Город', max_length=100)
     description = models.CharField('Погодные условия', max_length=100)
@@ -27,24 +31,30 @@ class Weather(models.Model):
 class Ordering(models.Model):
     """Сортировка"""
     CHOICES = (
-        ('city_id', 'Id города: по возростанию'),
-        ('-city_id', 'Id города: по убыванию'),
-        ('name', 'Имя: по возростанию'),
-        ('-name', 'Имя: по убыванию'),
+        ('city_id', 'ID города: по возростанию'),
+        ('-city_id', 'ID города: по убыванию'),
+        ('name', 'Город: по возростанию'),
+        ('-name', 'Город: по убыванию'),
         ('temp', 'Температура: по возростанию'),
         ('-temp', 'Температура: по убыванию'),
     )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     sort = models.CharField('Сортировать по:', max_length=10,
                             choices=CHOICES,
                             default='city_id')
 
     class Meta:
-        verbose_name = "Настройки"
-        verbose_name_plural = "Настройки"
+        verbose_name = "Настройки сортировки"
+        verbose_name_plural = "Настройки сортировки"
 
-    def save(self, *args, **kwargs):
-        self.id = 1
-        super().save(*args, **kwargs)
+    @receiver(post_save, sender=User)
+    def create_user_ordering(sender, instance, created, **kwargs):
+        if created:
+            Ordering.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_ordering(sender, instance, **kwargs):
+        instance.ordering.save()
 
     def __str__(self):
-        return 'Настройки сортировки'
+        return f'Настройки сортировки для {self.user}'

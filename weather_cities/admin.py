@@ -1,12 +1,7 @@
 from django.contrib import admin
-from .models import Weather, Ordering
+from .models import Weather
 
 
 @admin.register(Weather)
 class WeatherAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Ordering)
-class OrderingAdmin(admin.ModelAdmin):
     pass
