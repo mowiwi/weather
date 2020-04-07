@@ -166,23 +166,20 @@ def import_csv(request):
                 weather_group = weather_group_city(response)
 
                 for weather in weather_group:
-                    obj, created = Weather.objects.get_or_create(
+                    Weather.objects.create(
                         city_id=weather['city_id'],
-
-                        defaults={
-                            'icon': weather['icon'],
-                            'name': weather['name'],
-                            'description': weather['description'],
-                            'temp': weather['temp'],
-                            'pressure': weather['pressure'],
-                            'humidity': weather['humidity'],
-                            'speed': weather['speed'],
-                            'coord_lon': weather['coord_lon'],
-                            'coord_lat': weather['coord_lat'],
-                            'sunrise': weather['sunrise'],
-                            'sunset': weather['sunset']
-                        })
-                    obj.user.add(request.user)
+                        icon=weather['icon'],
+                        name=weather['name'],
+                        description=weather['description'],
+                        temp=weather['temp'],
+                        pressure=weather['pressure'],
+                        humidity=weather['humidity'],
+                        speed=weather['speed'],
+                        coord_lon=weather['coord_lon'],
+                        coord_lat=weather['coord_lat'],
+                        sunrise=weather['sunrise'],
+                        sunset=weather['sunset']
+                    ).user.add(request.user)
 
     else:
         messages.error(request, "Ошибка")

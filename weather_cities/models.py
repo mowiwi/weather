@@ -21,7 +21,7 @@ class Weather(models.Model):
     sunset = models.TimeField('Закат')
 
     def __str__(self):
-        return self.name
+        return f"Погода в {self.name}"
 
     class Meta:
         verbose_name = "Погода"
